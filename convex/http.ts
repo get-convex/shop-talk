@@ -115,7 +115,11 @@ const defaultConfig: RTVIClientConfigOption[] = [
         value: [
           {
             type: "function",
-            function: functions,
+            function: functions.get_current_weather,
+          },
+          {
+            type: "function",
+            function: functions.create_shopping_list,
           },
         ],
       },
