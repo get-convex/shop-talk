@@ -1,5 +1,6 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
+import { RTVIClientConfigOption } from "@pipecat-ai/client-js";
 
 const http = httpRouter();
 
@@ -34,14 +35,82 @@ http.route({
   }),
 });
 
+const defaultConfig: RTVIClientConfigOption[] = [
+  {
+    service: "tts",
+    options: [
+      {
+        name: "voice",
+        value: "79a125e8-cd45-4c13-8a67-188112f4dd22",
+      },
+    ],
+  },
+  {
+    service: "llm",
+    options: [
+      {
+        name: "model",
+        value: "gpt-4o-mini",
+      },
+      {
+        name: "initial_messages",
+        value: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "You are a hippy.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "run_on_config",
+        value: true,
+      },
+      {
+        name: "tools",
+        value: [
+          {
+            type: "function",
+            function: {
+              name: "get_current_weather",
+              description:
+                "Get the current weather for a location. This includes the conditions as well as the temperature.",
+              parameters: {
+                type: "object",
+                properties: {
+                  location: {
+                    type: "string",
+                    description: "The city and state, e.g. San Francisco, CA",
+                  },
+                  format: {
+                    type: "string",
+                    enum: ["celsius", "fahrenheit"],
+                    description:
+                      "The temperature unit to use. Infer this from the users location.",
+                  },
+                },
+                required: ["location", "format"],
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+];
+
 http.route({
   path: "/connect",
   method: "POST",
   handler: httpAction(async (ctx, request) => {
-    const { services, config } = await request.json();
+    const { services } = await request.json();
 
-    if (!services || !config || !process.env.DAILY_BOTS_KEY)
-      return Response.json("Services or config not found on request body", {
+    if (!services || !process.env.DAILY_BOTS_KEY)
+      return Response.json("Services not found on request body", {
         status: 400,
       });
 
@@ -52,7 +121,7 @@ http.route({
       api_keys: {
         openai: process.env.OPENAI_API_KEY,
       },
-      config,
+      config: defaultConfig,
     };
 
     const req = await fetch("https://api.daily.co/v1/bots/start", {
