@@ -15,6 +15,56 @@ export const functions = {
       required: ["name"],
     },
   },
+  add_item: {
+    name: "add_item",
+    description: "Add a new item to the current shopping list",
+    parameters: {
+      type: "object",
+      properties: {
+        item: {
+          type: "string",
+          description: "The name of the item to add",
+        },
+        quantity: {
+          type: "number",
+          description: "The quantity of the item",
+        },
+      },
+      required: ["item"],
+    },
+  },
+  update_item: {
+    name: "update_item",
+    description: "Update an existing item in the current shopping list",
+    parameters: {
+      type: "object",
+      properties: {
+        item: {
+          type: "string",
+          description: "The name of the item to update",
+        },
+        newQuantity: {
+          type: "number",
+          description: "The new quantity of the item",
+        },
+      },
+      required: ["item", "newQuantity"],
+    },
+  },
+  remove_item: {
+    name: "remove_item",
+    description: "Remove an item from the current shopping list",
+    parameters: {
+      type: "object",
+      properties: {
+        item: {
+          type: "string",
+          description: "The name of the item to remove",
+        },
+      },
+      required: ["item"],
+    },
+  },
 } as const;
 
 export type FunctionNames = keyof typeof functions;
@@ -44,7 +94,7 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
             content: [
               {
                 type: "text",
-                text: "You are a hippy.",
+                text: "You are a helpful shopping list assistant.",
               },
             ],
           },

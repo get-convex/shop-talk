@@ -9,5 +9,6 @@ export default defineSchema({
     listId: v.id("shoppingLists"),
     label: v.string(),
     completed: v.boolean(),
+    quantity: v.optional(v.number()),
   }),
 });
