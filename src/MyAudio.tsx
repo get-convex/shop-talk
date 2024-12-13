@@ -9,6 +9,7 @@ import { useRTVIClient, useRTVIClientEvent } from "@pipecat-ai/client-react";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { Button } from "./components/ui/button";
+import { Mic } from "lucide-react";
 
 interface Props {}
 
@@ -17,12 +18,12 @@ export const MyAudio: React.FC<Props> = ({}) => {
   const [error, setError] = useState<string | null>(null);
   const [state, setState] = useState<TransportState>("disconnected");
   const [botTranscript, setBotTranscript] = useState<BotLLMTextData[]>([]);
-  
+
   useRTVIClientEvent(
     RTVIEvent.BotTranscript,
     useCallback(
       (transcriptData: BotLLMTextData) => {
-        if (transcriptData.final) {
+        if (transcriptData.text) {
           setBotTranscript((prev) => [...prev, transcriptData]);
         }
       },
@@ -62,9 +63,11 @@ export const MyAudio: React.FC<Props> = ({}) => {
 
       <Button
         onClick={() => (state === "disconnected" ? connect() : disconnect())}
-        className="mx-auto bg-slate-300 px-5 py-2 rounded-full self-center"
+        className="bg-amber-500 hover:bg-amber-600 text-white"
+        size="lg"
       >
-        {state === "disconnected" ? "Start" : "Disconnect"}
+        {state === "disconnected" ? "Start Listening" : "Disconnect"}
+        <Mic className="mr-2 h-5 w-5" />
       </Button>
 
       <div className="text-center">

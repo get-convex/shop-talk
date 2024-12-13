@@ -9,6 +9,8 @@ import { useState } from "react";
 import { DailyTransport } from "@pipecat-ai/daily-transport";
 import { RTVIClientAudio, RTVIClientProvider } from "@pipecat-ai/client-react";
 import { MyAudio } from "@/MyAudio";
+import VoiceControls from "./components/VoiceControls";
+import ShoppingList from "./components/ShoppingList";
 
 function App() {
   const [voiceClient, setVoiceClient] = useState<RTVIClient | null>(null);
@@ -58,7 +60,7 @@ function App() {
   return (
     <RTVIClientProvider client={voiceClient!}>
       <>
-        <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-gray-100">
+        {/* <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-gray-100">
           <div className="flex flex-col gap-4 items-center">
             <h1 className="text-4xl font-bold">My First Daily Bot</h1>
             <Button
@@ -70,9 +72,24 @@ function App() {
             >
               Say Hello
             </Button>
-            <MyAudio />
+            <div className="flex h-screen bg-amber-50">
+              <div className="w-1/2 p-4 border-r border-amber-200">
+                <VoiceControls />
+              </div>
+              <div className="w-1/2 p-4">
+                <ShoppingList />
+              </div>
+            </div>
           </div>
-        </main>
+        </main> */}
+        <div className="flex h-screen bg-amber-50">
+          <div className="w-1/2 p-4 border-r border-amber-200">
+            <VoiceControls />
+          </div>
+          <div className="w-1/2 p-4">
+            <ShoppingList />
+          </div>
+        </div>
         <RTVIClientAudio />
       </>
     </RTVIClientProvider>
