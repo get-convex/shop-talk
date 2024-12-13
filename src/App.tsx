@@ -11,6 +11,7 @@ import { RTVIClientAudio, RTVIClientProvider } from "@pipecat-ai/client-react";
 import { MyAudio } from "@/MyAudio";
 import VoiceControls from "./components/VoiceControls";
 import ShoppingList from "./components/ShoppingList";
+import { functionNames, FunctionNames } from "../convex/http";
 
 function App() {
   const [voiceClient, setVoiceClient] = useState<RTVIClient | null>(null);
@@ -41,9 +42,11 @@ function App() {
     llmHelper.handleFunctionCall(async (fn: FunctionCallParams) => {
       const args = fn.arguments as any;
 
+      const functionName = fn.functionName as FunctionNames;
+
       console.log("----- FUNCTION CALL", fn);
 
-      if (fn.functionName === "get_current_weather" && args.location) {
+      if (functionName === "get_current_weather" && args.location) {
         const response = await fetch(
           `/api/weather?location=${encodeURIComponent(args.location)}`
         );

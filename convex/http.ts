@@ -35,6 +35,32 @@ http.route({
   }),
 });
 
+export const functions = {
+  get_current_weather: {
+    name: "get_current_weather",
+    description:
+      "Get the current weather for a location. This includes the conditions as well as the temperature.",
+    parameters: {
+      type: "object",
+      properties: {
+        location: {
+          type: "string",
+          description: "The city and state, e.g. San Francisco, CA",
+        },
+        format: {
+          type: "string",
+          enum: ["celsius", "fahrenheit"],
+          description:
+            "The temperature unit to use. Infer this from the users location.",
+        },
+      },
+      required: ["location", "format"],
+    },
+  },
+};
+
+export type FunctionNames = keyof typeof functions;
+
 const defaultConfig: RTVIClientConfigOption[] = [
   {
     service: "tts",
@@ -75,27 +101,7 @@ const defaultConfig: RTVIClientConfigOption[] = [
         value: [
           {
             type: "function",
-            function: {
-              name: "get_current_weather",
-              description:
-                "Get the current weather for a location. This includes the conditions as well as the temperature.",
-              parameters: {
-                type: "object",
-                properties: {
-                  location: {
-                    type: "string",
-                    description: "The city and state, e.g. San Francisco, CA",
-                  },
-                  format: {
-                    type: "string",
-                    enum: ["celsius", "fahrenheit"],
-                    description:
-                      "The temperature unit to use. Infer this from the users location.",
-                  },
-                },
-                required: ["location", "format"],
-              },
-            },
+            function: functions,
           },
         ],
       },
