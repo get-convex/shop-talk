@@ -31,13 +31,6 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
       console.log("Current route:", location.pathname);
 
       switch (functionName) {
-        case "get_current_weather":
-          if (!args.location) return { error: "location is required" };
-          const response = await fetch(
-            `/api/weather?location=${encodeURIComponent(args.location)}`
-          );
-          return await response.json();
-
         case "create_shopping_list":
           if (!args.name) return { error: "name is required" };
           const listId = await createList({ name: args.name });
