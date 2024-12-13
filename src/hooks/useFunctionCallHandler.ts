@@ -2,9 +2,12 @@ import { useEffect } from "react"
 import { FunctionCallParams, LLMHelper, RTVIClient } from "@pipecat-ai/client-js"
 import { useLocation } from "react-router-dom"
 import { FunctionNames } from "../../convex/http"
+import { useMutation } from "convex/react"
+import { api } from "../../convex/_generated/api"
 
 export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
   const location = useLocation()
+  const createList = useMutation(api.shoppingLists.mutations.createList)
 
   useEffect(() => {
     if (!voiceClient) return
@@ -31,7 +34,15 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
           )
           return await response.json()
 
-        // Add more function handlers here
+        case "create_shopping_list":
+          if (!args.name) return { error: "name is required" }
+          const listId = await createList({ name: args.name })
+          return { 
+            success: true, 
+            message: `Created shopping list "${args.name}"`,
+            listId
+          }
+
         default:
           return { error: `Unknown function: ${functionName}` }
       }
@@ -41,5 +52,5 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
     return () => {
       voiceClient.unregisterHelper("llm")
     }
-  }, [voiceClient, location.pathname])
+  }, [voiceClient, location.pathname, createList])
 } 

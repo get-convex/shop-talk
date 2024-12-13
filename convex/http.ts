@@ -57,6 +57,20 @@ export const functions = {
       required: ["location", "format"],
     },
   },
+  create_shopping_list: {
+    name: "create_shopping_list",
+    description: "Create a new shopping list with a name and optional items",
+    parameters: {
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+          description: "The name of the shopping list",
+        },
+      },
+      required: ["name"],
+    },
+  },
 };
 
 export type FunctionNames = keyof typeof functions;
