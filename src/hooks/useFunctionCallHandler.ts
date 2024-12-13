@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { FunctionCallParams, LLMHelper, RTVIClient } from "@pipecat-ai/client-js"
 import { useLocation } from "react-router-dom"
-import { FunctionNames } from "../../convex/http"
+import { FunctionNames } from "../../convex/functions"
 import { useMutation } from "convex/react"
 import { api } from "../../convex/_generated/api"
 

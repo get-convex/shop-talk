@@ -1,6 +1,7 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { RTVIClientConfigOption } from "@pipecat-ai/client-js";
+import { functions } from "./functions";
 
 const http = httpRouter();
 
@@ -35,45 +36,8 @@ http.route({
   }),
 });
 
-export const functions = {
-  get_current_weather: {
-    name: "get_current_weather",
-    description:
-      "Get the current weather for a location. This includes the conditions as well as the temperature.",
-    parameters: {
-      type: "object",
-      properties: {
-        location: {
-          type: "string",
-          description: "The city and state, e.g. San Francisco, CA",
-        },
-        format: {
-          type: "string",
-          enum: ["celsius", "fahrenheit"],
-          description:
-            "The temperature unit to use. Infer this from the users location.",
-        },
-      },
-      required: ["location", "format"],
-    },
-  },
-  create_shopping_list: {
-    name: "create_shopping_list",
-    description: "Create a new shopping list with a name and optional items",
-    parameters: {
-      type: "object",
-      properties: {
-        name: {
-          type: "string",
-          description: "The name of the shopping list",
-        },
-      },
-      required: ["name"],
-    },
-  },
-};
-
-export type FunctionNames = keyof typeof functions;
+export { functions };
+export type { FunctionNames } from "./functions";
 
 const defaultConfig: RTVIClientConfigOption[] = [
   {
@@ -112,16 +76,10 @@ const defaultConfig: RTVIClientConfigOption[] = [
       },
       {
         name: "tools",
-        value: [
-          {
-            type: "function",
-            function: functions.get_current_weather,
-          },
-          {
-            type: "function",
-            function: functions.create_shopping_list,
-          },
-        ],
+        value: Object.values(functions).map(fn => ({
+          type: "function" as const,
+          function: fn,
+        })),
       },
     ],
   },
