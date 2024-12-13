@@ -11,14 +11,16 @@ export default function ShoppingList() {
   const { id } = useParams();
   const navigate = useNavigate();
   const lists = useQuery(api.shoppingLists.queries.getAllLists);
-  const list = lists?.find(l => l._id === id);
-  
-  const updateListName = useMutation(api.shoppingLists.mutations.updateListName);
+  const list = lists?.find((l) => l._id === id);
+
+  const updateListName = useMutation(
+    api.shoppingLists.mutations.updateListName
+  );
   const addItem = useMutation(api.shoppingLists.mutations.addItem);
   const updateItem = useMutation(api.shoppingLists.mutations.updateItem);
   const deleteItem = useMutation(api.shoppingLists.mutations.deleteItem);
   const deleteList = useMutation(api.shoppingLists.mutations.deleteList);
-  
+
   const [newItemName, setNewItemName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingText, setEditingText] = useState("");
@@ -87,7 +89,9 @@ export default function ShoppingList() {
         <Input
           ref={titleInputRef}
           value={list.name}
-          onChange={(e) => updateListName({ id: list._id, name: e.target.value })}
+          onChange={(e) =>
+            updateListName({ id: list._id, name: e.target.value })
+          }
           onBlur={handleSaveTitle}
           onKeyDown={(e) => e.key === "Enter" && handleSaveTitle()}
           className="text-2xl font-bold mb-4 text-amber-800 bg-transparent border-none focus:ring-0"
@@ -123,7 +127,7 @@ export default function ShoppingList() {
           >
             <Checkbox
               checked={item.completed}
-              onCheckedChange={(checked) => 
+              onCheckedChange={(checked) =>
                 updateItem({ id: item._id, completed: checked as boolean })
               }
               className="mr-2"
@@ -158,8 +162,8 @@ export default function ShoppingList() {
                 variant="ghost"
                 size="icon"
                 onClick={() => {
-                  setEditingId(item._id)
-                  setEditingText(item.label)
+                  setEditingId(item._id);
+                  setEditingText(item.label);
                 }}
                 className="text-blue-500 hover:text-blue-700"
               >
