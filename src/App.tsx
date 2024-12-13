@@ -8,9 +8,10 @@ import {
 import { useState } from "react";
 import { DailyTransport } from "@pipecat-ai/daily-transport";
 import { RTVIClientAudio, RTVIClientProvider } from "@pipecat-ai/client-react";
-import { MyAudio } from "@/MyAudio";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VoiceControls from "./components/VoiceControls";
 import ShoppingList from "./components/ShoppingList";
+import ShoppingListsOverview from "./components/ShoppingListsOverview";
 import { FunctionNames } from "../convex/http";
 
 function App() {
@@ -62,39 +63,20 @@ function App() {
 
   return (
     <RTVIClientProvider client={voiceClient!}>
-      <>
-        {/* <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-gray-100">
-          <div className="flex flex-col gap-4 items-center">
-            <h1 className="text-4xl font-bold">My First Daily Bot</h1>
-            <Button
-              onClick={() => {
-                fetch(`${import.meta.env.VITE_CONVEX_SITE_URL}/hello`)
-                  .then((r) => r.json())
-                  .then(console.log);
-              }}
-            >
-              Say Hello
-            </Button>
-            <div className="flex h-screen bg-amber-50">
-              <div className="w-1/2 p-4 border-r border-amber-200">
-                <VoiceControls />
-              </div>
-              <div className="w-1/2 p-4">
-                <ShoppingList />
-              </div>
-            </div>
-          </div>
-        </main> */}
-        <div className="flex h-screen bg-amber-50">
-          <div className="w-1/2 p-4 border-r border-amber-200">
+      <BrowserRouter>
+        <div className="h-screen bg-amber-50">
+          <div className="w-64 fixed top-0 left-0 h-full border-r border-amber-200 bg-white">
             <VoiceControls />
           </div>
-          <div className="w-1/2 p-4">
-            <ShoppingList />
+          <div className="ml-64">
+            <Routes>
+              <Route path="/" element={<ShoppingListsOverview />} />
+              <Route path="/list/:id" element={<ShoppingList />} />
+            </Routes>
           </div>
         </div>
         <RTVIClientAudio />
-      </>
+      </BrowserRouter>
     </RTVIClientProvider>
   );
 }
