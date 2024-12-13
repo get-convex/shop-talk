@@ -22,18 +22,10 @@ function App() {
       transport: new DailyTransport(),
       params: {
         baseUrl: import.meta.env.VITE_CONVEX_SITE_URL,
-        requestData: {
-          services: {
-            stt: "deepgram",
-            tts: "cartesia",
-            llm: "openai",
-          },
-        },
         endpoints: {
           connect: "/connect",
           action: "/actions",
         },
-        
       },
     });
 

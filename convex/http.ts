@@ -107,17 +107,20 @@ http.route({
   path: "/connect",
   method: "POST",
   handler: httpAction(async (ctx, request) => {
-    const { services } = await request.json();
-
-    if (!services || !process.env.DAILY_BOTS_KEY)
-      return Response.json("Services not found on request body", {
+    if (!process.env.DAILY_BOTS_KEY) {
+      return Response.json("Daily bots key not found", {
         status: 400,
       });
+    }
 
     const payload = {
       bot_profile: "voice_2024_10",
       max_duration: 600,
-      services,
+      services: {
+        stt: "deepgram",
+        tts: "cartesia",
+        llm: "openai",
+      },
       api_keys: {
         openai: process.env.OPENAI_API_KEY,
       },
