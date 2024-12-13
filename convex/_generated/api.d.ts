@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as http from "../http.js";
+import type * as shoppingLists_queries from "../shoppingLists/queries.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,6 +26,7 @@ import type * as http from "../http.js";
  */
 declare const fullApi: ApiFromModules<{
   http: typeof http;
+  "shoppingLists/queries": typeof shoppingLists_queries;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

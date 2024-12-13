@@ -11,7 +11,7 @@ import { RTVIClientAudio, RTVIClientProvider } from "@pipecat-ai/client-react";
 import { MyAudio } from "@/MyAudio";
 import VoiceControls from "./components/VoiceControls";
 import ShoppingList from "./components/ShoppingList";
-import { functionNames, FunctionNames } from "../convex/http";
+import { FunctionNames } from "../convex/http";
 
 function App() {
   const [voiceClient, setVoiceClient] = useState<RTVIClient | null>(null);
