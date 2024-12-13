@@ -13,8 +13,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as functions from "../functions.js";
 import type * as http from "../http.js";
+import type * as rtviConfig from "../rtviConfig.js";
 import type * as shoppingLists_mutations from "../shoppingLists/mutations.js";
 import type * as shoppingLists_queries from "../shoppingLists/queries.js";
 
@@ -27,8 +27,8 @@ import type * as shoppingLists_queries from "../shoppingLists/queries.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  functions: typeof functions;
   http: typeof http;
+  rtviConfig: typeof rtviConfig;
   "shoppingLists/mutations": typeof shoppingLists_mutations;
   "shoppingLists/queries": typeof shoppingLists_queries;
 }>;

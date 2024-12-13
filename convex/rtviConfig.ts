@@ -1,3 +1,4 @@
+import { RTVIClientConfigOption } from "@pipecat-ai/client-js";
 export const functions = {
   get_current_weather: {
     name: "get_current_weather",
@@ -34,6 +35,52 @@ export const functions = {
       required: ["name"],
     },
   },
-} as const
+} as const;
 
-export type FunctionNames = keyof typeof functions 
+export type FunctionNames = keyof typeof functions;
+
+export const defaultRtviConfig: RTVIClientConfigOption[] = [
+  {
+    service: "tts",
+    options: [
+      {
+        name: "voice",
+        value: "79a125e8-cd45-4c13-8a67-188112f4dd22",
+      },
+    ],
+  },
+  {
+    service: "llm",
+    options: [
+      {
+        name: "model",
+        value: "gpt-4o-mini",
+      },
+      {
+        name: "initial_messages",
+        value: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "You are a hippy.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: "run_on_config",
+        value: true,
+      },
+      {
+        name: "tools",
+        value: Object.values(functions).map((fn) => ({
+          type: "function" as const,
+          function: fn,
+        })),
+      },
+    ],
+  },
+];
