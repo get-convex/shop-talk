@@ -4,7 +4,11 @@ import {
   RTVIEvent,
   TransportState,
 } from "@pipecat-ai/client-js";
-import { useRTVIClient, useRTVIClientEvent } from "@pipecat-ai/client-react";
+import {
+  useRTVIClient,
+  useRTVIClientEvent,
+  VoiceVisualizer,
+} from "@pipecat-ai/client-react";
 import * as React from "react";
 import { useCallback, useState, useRef } from "react";
 import { Button } from "./components/ui/button";
@@ -31,21 +35,21 @@ export const MyAudio: React.FC<Props> = ({}) => {
       (transcriptData: BotLLMTextData) => {
         if (transcriptData.text) {
           const id = Math.random().toString(36).substring(7);
-          setBotTranscript(prev => [...prev, { ...transcriptData, id }]);
-          
+          setBotTranscript((prev) => [...prev, { ...transcriptData, id }]);
+
           // Set timeout to start fade out after 30 seconds
           const fadeTimeout = setTimeout(() => {
-            setBotTranscript(prev => 
-              prev.map(t => t.id === id ? { ...t, fadeOut: true } : t)
+            setBotTranscript((prev) =>
+              prev.map((t) => (t.id === id ? { ...t, fadeOut: true } : t))
             );
-            
+
             // Remove after fade animation (2 seconds)
             setTimeout(() => {
-              setBotTranscript(prev => prev.filter(t => t.id !== id));
+              setBotTranscript((prev) => prev.filter((t) => t.id !== id));
               timeoutRefs.current.delete(id);
             }, 2000);
           }, 30000);
-          
+
           timeoutRefs.current.set(id, fadeTimeout);
         }
       },
@@ -74,9 +78,9 @@ export const MyAudio: React.FC<Props> = ({}) => {
   async function disconnect() {
     if (!voiceClient) return;
     await voiceClient.disconnect();
-    
+
     // Clear all timeouts
-    timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
+    timeoutRefs.current.forEach((timeout) => clearTimeout(timeout));
     timeoutRefs.current.clear();
     setBotTranscript([]);
   }
@@ -93,33 +97,50 @@ export const MyAudio: React.FC<Props> = ({}) => {
         )}
 
         <div className="relative">
+          <div className="mb-4 h-fit bg-white/80 rounded-xl p-4 shadow-sm">
+            <div className="text-xs font-medium text-amber-600 mb-2 text-center">
+              GPT-4 Voice
+            </div>
+            <div className="h-32 flex items-center justify-center">
+              <VoiceVisualizer participantType="bot" barColor="#F59E0B" />
+            </div>
+          </div>
+
           <Button
             onClick={() => (isConnected ? disconnect() : connect())}
             className={cn(
               "w-full transition-all duration-300 shadow-lg",
-              isConnected 
-                ? "bg-amber-600 hover:bg-amber-700 text-white" 
+              isConnected
+                ? "bg-amber-600 hover:bg-amber-700 text-white"
                 : "bg-amber-500 hover:bg-amber-600 text-white"
             )}
             size="lg"
           >
-            {isConnected ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            {isConnected ? (
+              <MicOff className="w-5 h-5" />
+            ) : (
+              <Mic className="w-5 h-5" />
+            )}
             {isConnected ? "Stop Listening" : "Start Listening"}
           </Button>
 
-          <div className={cn(
-            "absolute -bottom-6 left-0 right-0 text-center text-xs font-medium transition-all duration-300",
-            isConnected ? "text-amber-600" : "text-amber-400"
-          )}>
+          <div
+            className={cn(
+              "absolute -bottom-6 left-0 right-0 text-center text-xs font-medium transition-all duration-300",
+              isConnected ? "text-amber-600" : "text-amber-400"
+            )}
+          >
             {state}
           </div>
         </div>
       </div>
 
-      <div className={cn(
-        "flex-1 flex flex-col min-h-0 px-6 pb-6",
-        botTranscript.length > 0 ? "opacity-100" : "opacity-0"
-      )}>
+      <div
+        className={cn(
+          "flex-1 flex flex-col min-h-0 px-6 pb-6",
+          botTranscript.length > 0 ? "opacity-100" : "opacity-0"
+        )}
+      >
         <div className="text-xs font-medium text-amber-600 uppercase tracking-wider mb-1 flex-none">
           Transcript
         </div>
@@ -131,7 +152,7 @@ export const MyAudio: React.FC<Props> = ({}) => {
               </div>
             ) : (
               botTranscript.map((transcript) => (
-                <div 
+                <div
                   key={transcript.id}
                   className={cn(
                     "text-sm text-amber-900 mb-2 last:mb-0 transition-all duration-2000",
@@ -148,4 +169,4 @@ export const MyAudio: React.FC<Props> = ({}) => {
       </div>
     </div>
   );
-}
+};
