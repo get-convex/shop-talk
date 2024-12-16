@@ -193,7 +193,7 @@ export default function ShoppingList() {
           value={newItemName}
           onChange={(e) => setNewItemName(e.target.value)}
           placeholder="Add new item"
-          className="flex-grow"
+          className="flex-grow bg-yellow-50/80 border-amber-200 focus-visible:ring-amber-400 placeholder:text-amber-400/50"
         />
         <Button
           type="submit"

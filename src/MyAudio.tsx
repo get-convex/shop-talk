@@ -12,7 +12,7 @@ import {
 } from "@pipecat-ai/client-react";
 import * as React from "react";
 import { useCallback, useState, useRef, useEffect } from "react";
-import { Loader2, Mic, MicOff, Pause } from "lucide-react";
+import { Loader2, Mic, MicOff, Pause, User, Bot } from "lucide-react";
 import { cn } from "./lib/utils";
 
 interface TranscriptItem {
@@ -221,13 +221,18 @@ export const MyAudio: React.FC<Props> = () => {
                   <div
                     key={transcript.id}
                     className={cn(
-                      "text-sm mb-2 last:mb-0 transition-all duration-2000",
+                      "text-sm mb-2 last:mb-0 transition-all duration-2000 flex items-start gap-2",
                       "animate-in fade-in slide-in-from-bottom-2",
                       transcript.isUser ? "text-blue-700" : "text-amber-900",
                       transcript.fadeOut && "opacity-0 translate-y-1"
                     )}
                   >
-                    {transcript.text}
+                    {transcript.isUser ? (
+                      <User className="w-4 h-4 mt-1 flex-shrink-0" />
+                    ) : (
+                      <Bot className="w-4 h-4 mt-1 flex-shrink-0" />
+                    )}
+                    <span>{transcript.text}</span>
                   </div>
                 ))
               )}
