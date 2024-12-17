@@ -1,46 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RTVIClientProvider, RTVIClientAudio } from "@pipecat-ai/client-react";
-import VoiceControls from "./components/VoiceControls";
-import ShoppingList from "./components/ShoppingList";
-import ShoppingListsOverview from "./components/ShoppingListsOverview";
+import VoiceControls from "./voiceControls/VoiceControls";
+import ShoppingList from "./shoppingLists/ShoppingList";
+import ShoppingListsOverview from "./shoppingLists/ShoppingListsOverview";
 import { useFunctionCallHandler } from "./hooks/useFunctionCallHandler";
-import { useEffect, useMemo } from "react";
-import { DailyTransport } from "@pipecat-ai/daily-transport";
-import { RTVIClient } from "@pipecat-ai/client-js";
+import { useCreateAndInitVoiceClient } from './hooks/useCreateAndInitVoiceClient'
 
 function App() {
-  const voiceClient = useMemo(
-    () =>
-      new RTVIClient({
-        transport: new DailyTransport(),
-        params: {
-          baseUrl: import.meta.env.VITE_CONVEX_SITE_URL,
-          endpoints: {
-            connect: "/connect",
-            action: "/actions",
-          },
-        },
-      }),
-    []
-  );
-
-  useEffect(() => {
-    if (!voiceClient) return;
-
-    voiceClient.connect().catch((e) => {
-      console.error(e);
-      voiceClient.disconnect();
-    });
-
-    // Cleanup on unmount
-    return () => {
-      voiceClient.disconnect().catch((e) => {
-        console.error(e);
-      });
-    };
-  }, [voiceClient]);
-
-  useFunctionCallHandler(voiceClient);
+  const voiceClient = useCreateAndInitVoiceClient()
+  useFunctionCallHandler(voiceClient)
 
   return (
     <RTVIClientProvider client={voiceClient!}>

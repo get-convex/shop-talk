@@ -15,7 +15,7 @@ export const MicButton: React.FC<MicButtonProps> = ({
   isMuted,
   state,
   isReadyToTalk,
-  onToggleMute
+  onToggleMute,
 }) => {
   return (
     <div className="relative flex justify-center">
@@ -50,4 +50,4 @@ export const MicButton: React.FC<MicButtonProps> = ({
       </div>
     </div>
   );
-}; 
+};

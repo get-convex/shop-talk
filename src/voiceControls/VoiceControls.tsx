@@ -1,4 +1,3 @@
-import { MyAudio } from "@/MyAudio";
 import { RTVIError, TransportState, RTVIEvent } from "@pipecat-ai/client-js";
 import * as React from "react";
 import {
@@ -14,8 +13,6 @@ import { MicButton } from "./MicButton";
 
 export default function VoiceControls() {
   const voiceClient = useRTVIClient();
-
-
 
   const [state, setState] = useState<TransportState>("disconnected");
   const [isMuted, setIsMuted] = useState(false);

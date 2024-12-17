@@ -6,6 +6,7 @@ import { Trash2, Edit2, Check, ArrowLeft } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { Id } from "convex/_generated/dataModel";
 
 export default function ShoppingList() {
   const { id } = useParams();
@@ -22,7 +23,9 @@ export default function ShoppingList() {
   const deleteList = useMutation(api.shoppingLists.mutations.deleteList);
 
   const [newItemName, setNewItemName] = useState("");
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<Id<"shoppingListItems"> | null>(
+    null
+  );
   const [editingText, setEditingText] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);

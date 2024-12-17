@@ -8,12 +8,15 @@ import { useLocation } from "react-router-dom";
 import { FunctionNames } from "../../convex/rtviConfig";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { Id } from "convex/_generated/dataModel";
 
 export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
   const location = useLocation();
   const createList = useMutation(api.shoppingLists.mutations.createList);
   const addItem = useMutation(api.shoppingLists.mutations.addItem);
-  const findItemByLabel = useMutation(api.shoppingLists.mutations.findItemByLabel);
+  const findItemByLabel = useMutation(
+    api.shoppingLists.mutations.findItemByLabel
+  );
   const updateItem = useMutation(api.shoppingLists.mutations.updateItem);
   const deleteItem = useMutation(api.shoppingLists.mutations.deleteItem);
 
@@ -36,7 +39,7 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
 
       // Extract current list ID from URL if we're on a list page
       const currentListId = location.pathname.startsWith("/list/")
-        ? location.pathname.split("/")[2]
+        ? (location.pathname.split("/")[2] as Id<"shoppingLists">)
         : null;
 
       if (!currentListId && functionName !== "create_shopping_list") {
@@ -55,33 +58,35 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
 
         case "add_item":
           if (!args.item) return { error: "item name is required" };
-          const newItemId = await addItem({ 
-            listId: currentListId!, 
+          const newItemId = await addItem({
+            listId: currentListId!,
             label: args.item,
             quantity: args.quantity,
           });
           return {
             success: true,
-            message: `Added ${args.quantity ? args.quantity + ' ' : ''}${args.item} to the list`,
+            message: `Added ${args.quantity ? args.quantity + " " : ""}${args.item} to the list`,
             itemId: newItemId,
           };
 
         case "update_item":
           if (!args.item) return { error: "item name is required" };
-          if (args.newQuantity === undefined) return { error: "new quantity is required" };
-          
-          const existingItem = await findItemByLabel({ 
-            listId: currentListId!, 
-            label: args.item 
+          if (args.newQuantity === undefined)
+            return { error: "new quantity is required" };
+
+          const existingItem = await findItemByLabel({
+            listId: currentListId!,
+            label: args.item,
           });
-          
-          if (!existingItem) return { error: `Item "${args.item}" not found in the list` };
-          
-          await updateItem({ 
+
+          if (!existingItem)
+            return { error: `Item "${args.item}" not found in the list` };
+
+          await updateItem({
             id: existingItem._id,
             quantity: args.newQuantity,
           });
-          
+
           return {
             success: true,
             message: `Updated ${args.item} quantity to ${args.newQuantity}`,
@@ -89,16 +94,17 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
 
         case "remove_item":
           if (!args.item) return { error: "item name is required" };
-          
-          const itemToRemove = await findItemByLabel({ 
-            listId: currentListId!, 
-            label: args.item 
+
+          const itemToRemove = await findItemByLabel({
+            listId: currentListId!,
+            label: args.item,
           });
-          
-          if (!itemToRemove) return { error: `Item "${args.item}" not found in the list` };
-          
+
+          if (!itemToRemove)
+            return { error: `Item "${args.item}" not found in the list` };
+
           await deleteItem({ id: itemToRemove._id });
-          
+
           return {
             success: true,
             message: `Removed ${args.item} from the list`,
@@ -113,5 +119,12 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
     return () => {
       voiceClient.unregisterHelper("llm");
     };
-  }, [location.pathname, createList, addItem, updateItem, deleteItem, findItemByLabel]);
+  }, [
+    location.pathname,
+    createList,
+    addItem,
+    updateItem,
+    deleteItem,
+    findItemByLabel,
+  ]);
 };
