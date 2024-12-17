@@ -15,22 +15,23 @@ export default function ShoppingListsOverview() {
 
   if (!lists) return <ShoppingListsOverviewSkeleton />;
 
-  const handleCreateList = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newListName.trim()) {
-      const id = await createList({ name: newListName.trim() });
-      setNewListName("");
-      setIsCreating(false);
-      routes.list({ id }).push();
-    }
-  };
-
   return (
     <div className="container mx-auto p-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-amber-800">My Shopping Lists</h1>
         {isCreating ? (
-          <form onSubmit={handleCreateList} className="flex gap-2">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (newListName.trim()) {
+                const id = await createList({ name: newListName.trim() });
+                setNewListName("");
+                setIsCreating(false);
+                routes.list({ id }).push();
+              }
+            }}
+            className="flex gap-2"
+          >
             <Input
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
