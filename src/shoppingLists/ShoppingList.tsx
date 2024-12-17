@@ -3,15 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2, Edit2, Check, ArrowLeft } from "lucide-react";
-import { useParams, useNavigate } from "react-router-dom";
+import { routes } from "../app/routes";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { ShoppingListSkeleton } from "@/components/ui/loading";
 
-export default function ShoppingList() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+interface ShoppingListProps {
+  id: string;
+}
+
+export default function ShoppingList({ id }: ShoppingListProps) {
   const list = useQuery(api.shoppingLists.queries.getById, { id: id as Id<"shoppingLists"> });
 
   const updateListName = useMutation(api.shoppingLists.mutations.updateName);
@@ -21,9 +23,7 @@ export default function ShoppingList() {
   const removeList = useMutation(api.shoppingLists.mutations.remove);
 
   const [newItemName, setNewItemName] = useState("");
-  const [editingId, setEditingId] = useState<Id<"shoppingListItems"> | null>(
-    null
-  );
+  const [editingId, setEditingId] = useState<Id<"shoppingListItems"> | null>(null);
   const [editingText, setEditingText] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +61,7 @@ export default function ShoppingList() {
   const handleDeleteList = async () => {
     if (list) {
       await removeList({ id: list._id });
-      navigate("/");
+      routes.home().push();
     }
   };
 
@@ -71,7 +71,7 @@ export default function ShoppingList() {
         <Button
           variant="ghost"
           className="text-amber-600 hover:text-amber-800"
-          onClick={() => navigate("/")}
+          onClick={() => routes.home().push()}
         >
           <ArrowLeft className="mr-2" />
           Back to Lists

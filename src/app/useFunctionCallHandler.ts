@@ -4,14 +4,14 @@ import {
   LLMHelper,
   RTVIClient,
 } from "@pipecat-ai/client-js";
-import { useLocation } from "react-router-dom";
+import { useRoute } from "./routes";
 import { FunctionNames } from "../../convex/rtviConfig";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 
 export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
-  const location = useLocation();
+  const route = useRoute();
   const createList = useMutation(api.shoppingLists.mutations.create);
   const addItem = useMutation(api.shoppingListItems.mutations.add);
   const findItemByLabel = useMutation(
@@ -35,12 +35,10 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
       const functionName = fn.functionName as FunctionNames;
 
       console.log("----- FUNCTION CALL", fn);
-      console.log("Current route:", location.pathname);
+      console.log("Current route:", route.name);
 
-      // Extract current list ID from URL if we're on a list page
-      const currentListId = location.pathname.startsWith("/list/")
-        ? (location.pathname.split("/")[2] as Id<"shoppingLists">)
-        : null;
+      // Extract current list ID from route params if we're on a list page
+      const currentListId = route.name === "list" ? route.params.id as Id<"shoppingLists"> : null;
 
       if (!currentListId && functionName !== "create_shopping_list") {
         return { error: "No shopping list selected" };
@@ -118,7 +116,7 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
       voiceClient.unregisterHelper("llm");
     };
   }, [
-    location.pathname,
+    route,
     createList,
     addItem,
     updateItem,

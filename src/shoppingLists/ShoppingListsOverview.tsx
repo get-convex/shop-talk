@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Button } from "../components/ui/button";
 import { Plus, ShoppingBag } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { routes } from "../app/routes";
 import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { ShoppingListsOverviewSkeleton } from "@/components/ui/loading";
@@ -10,7 +10,6 @@ import { ShoppingListsOverviewSkeleton } from "@/components/ui/loading";
 export default function ShoppingListsOverview() {
   const lists = useQuery(api.shoppingLists.queries.getAll);
   const createList = useMutation(api.shoppingLists.mutations.create);
-  const navigate = useNavigate();
   const [isCreating, setIsCreating] = useState(false);
   const [newListName, setNewListName] = useState("");
 
@@ -22,7 +21,7 @@ export default function ShoppingListsOverview() {
       const id = await createList({ name: newListName.trim() });
       setNewListName("");
       setIsCreating(false);
-      navigate(`/list/${id}`);
+      routes.list({ id }).push();
     }
   };
 
@@ -71,7 +70,7 @@ export default function ShoppingListsOverview() {
         {lists.map((list) => (
           <div
             key={list._id}
-            onClick={() => navigate(`/list/${list._id}`)}
+            onClick={() => routes.list({ id: list._id }).push()}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 cursor-pointer border-2 border-amber-100"
           >
             <div className="flex items-center gap-3 mb-4">
