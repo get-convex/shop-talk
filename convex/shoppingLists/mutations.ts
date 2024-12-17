@@ -38,14 +38,12 @@ export const addItem = mutation({
   args: { 
     listId: v.id("shoppingLists"),
     label: v.string(),
-    quantity: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const id = await ctx.db.insert("shoppingListItems", {
       listId: args.listId,
       label: args.label,
       completed: false,
-      quantity: args.quantity,
     })
     return id
   },
@@ -56,13 +54,11 @@ export const updateItem = mutation({
     id: v.id("shoppingListItems"),
     label: v.optional(v.string()),
     completed: v.optional(v.boolean()),
-    quantity: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const updates: { label?: string; completed?: boolean; quantity?: number } = {}
+    const updates: { label?: string; completed?: boolean } = {}
     if (args.label !== undefined) updates.label = args.label
     if (args.completed !== undefined) updates.completed = args.completed
-    if (args.quantity !== undefined) updates.quantity = args.quantity
     await ctx.db.patch(args.id, updates)
   },
 })
@@ -90,5 +86,16 @@ export const findItemByLabel = mutation({
       )
       .collect()
     return items[0] || null
+  },
+})
+
+export const getListItems = mutation({
+  args: { listId: v.id("shoppingLists") },
+  handler: async (ctx, args) => {
+    const items = await ctx.db
+      .query("shoppingListItems")
+      .filter(q => q.eq(q.field("listId"), args.listId))
+      .collect()
+    return items
   },
 }) 

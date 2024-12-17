@@ -25,10 +25,6 @@ export const functions = {
           type: "string",
           description: "The name of the item to add",
         },
-        quantity: {
-          type: "number",
-          description: "The quantity of the item",
-        },
       },
       required: ["item"],
     },
@@ -41,14 +37,32 @@ export const functions = {
       properties: {
         item: {
           type: "string",
-          description: "The name of the item to update",
+          description: "The current name of the item to update",
         },
-        newQuantity: {
-          type: "number",
-          description: "The new quantity of the item",
+        newName: {
+          type: "string",
+          description: "The new name for the item",
         },
       },
-      required: ["item", "newQuantity"],
+      required: ["item", "newName"],
+    },
+  },
+  update_item_by_index: {
+    name: "update_item_by_index",
+    description: "Update an item in the current shopping list by its position in the list",
+    parameters: {
+      type: "object",
+      properties: {
+        index: {
+          type: "number",
+          description: "The position of the item in the list (1-based index)",
+        },
+        newName: {
+          type: "string",
+          description: "The new name for the item",
+        },
+      },
+      required: ["index", "newName"],
     },
   },
   remove_item: {

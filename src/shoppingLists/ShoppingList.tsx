@@ -149,11 +149,6 @@ export default function ShoppingList() {
                 }`}
               >
                 {item.label}
-                {item.quantity && (
-                  <span className="ml-2 text-sm text-gray-500">
-                    (Qty: {item.quantity})
-                  </span>
-                )}
               </span>
             )}
             {editingId === item._id ? (
