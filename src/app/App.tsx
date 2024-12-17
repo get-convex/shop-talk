@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RTVIClientProvider, RTVIClientAudio } from "@pipecat-ai/client-react";
-import VoiceControls from "./voiceControls/VoiceControls";
-import ShoppingList from "./shoppingLists/ShoppingList";
-import ShoppingListsOverview from "./shoppingLists/ShoppingListsOverview";
-import { useFunctionCallHandler } from "./hooks/useFunctionCallHandler";
-import { useCreateAndInitVoiceClient } from './hooks/useCreateAndInitVoiceClient'
+import VoiceControls from "../voiceControls/VoiceControls";
+import ShoppingList from "../shoppingLists/ShoppingList";
+import ShoppingListsOverview from "../shoppingLists/ShoppingListsOverview";
+import { useFunctionCallHandler } from "./useFunctionCallHandler";
+import { useCreateAndInitVoiceClient } from './useCreateAndInitVoiceClient'
 
 function App() {
   const voiceClient = useCreateAndInitVoiceClient()

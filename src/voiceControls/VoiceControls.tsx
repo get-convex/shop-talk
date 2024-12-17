@@ -1,5 +1,4 @@
 import { RTVIError, TransportState, RTVIEvent } from "@pipecat-ai/client-js";
-import * as React from "react";
 import {
   useRTVIClient,
   useRTVIClientEvent,
@@ -7,9 +6,9 @@ import {
 } from "@pipecat-ai/client-react";
 import { TranscriptView } from "./TranscriptView";
 import { useEffect, useState } from "react";
-import { useTranscriptHandling } from "@/hooks/useTranscriptHandling";
 import { Loader2 } from "lucide-react";
 import { MicButton } from "./MicButton";
+import { useTranscriptHandling } from "./useTranscriptHandling";
 
 export default function VoiceControls() {
   const voiceClient = useRTVIClient();
