@@ -4,7 +4,7 @@ import {
   LLMHelper,
   RTVIClient,
 } from "@pipecat-ai/client-js";
-import { useRoute } from "./routes";
+import { routes, useRoute } from "./routes";
 import { FunctionNames } from "../../convex/rtviConfig";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -38,7 +38,8 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
       console.log("Current route:", route.name);
 
       // Extract current list ID from route params if we're on a list page
-      const currentListId = route.name === "list" ? route.params.id as Id<"shoppingLists"> : null;
+      const currentListId =
+        route.name === "list" ? (route.params.id as Id<"shoppingLists">) : null;
 
       if (!currentListId && functionName !== "create_shopping_list") {
         return { error: "No shopping list selected" };
@@ -106,6 +107,14 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
             message: `Removed ${args.item} from the list`,
           };
 
+        case "open_list":
+          routes.list({ id: args.name }).push();
+          return { success: true };
+
+        case "go_back_to_lists":
+          routes.home().push();
+          return { success: true };
+
         default:
           return { error: `Unknown function: ${functionName}` };
       }
@@ -115,12 +124,5 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
     return () => {
       voiceClient.unregisterHelper("llm");
     };
-  }, [
-    route,
-    createList,
-    addItem,
-    updateItem,
-    removeItem,
-    findItemByLabel,
-  ]);
+  }, [route, createList, addItem, updateItem, removeItem, findItemByLabel]);
 };

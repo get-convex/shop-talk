@@ -61,6 +61,29 @@ export const functions = {
       required: ["item"],
     },
   },
+  open_list: {
+    name: "open_list",
+    description: "Open a specific shopping list by its name",
+    parameters: {
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+          description: "The name of the shopping list to open",
+        },
+      },
+      required: ["name"],
+    },
+  },
+  go_back_to_lists: {
+    name: "go_back_to_lists",
+    description: "Navigate back to the shopping lists overview",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+  },
 } as const;
 
 export type FunctionNames = keyof typeof functions;
