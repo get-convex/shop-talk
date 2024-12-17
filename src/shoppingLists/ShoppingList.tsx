@@ -7,6 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
+import { ShoppingListSkeleton } from "@/components/ui/loading";
 
 export default function ShoppingList() {
   const { id } = useParams();
@@ -33,7 +34,7 @@ export default function ShoppingList() {
     }
   }, [isEditingTitle]);
 
-  if (!list) return <div>Loading...</div>;
+  if (!list) return <ShoppingListSkeleton />;
 
   const handleSaveTitle = () => {
     if (isEditingTitle && list) {

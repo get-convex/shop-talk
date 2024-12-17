@@ -5,6 +5,7 @@ import { Plus, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "../components/ui/input";
+import { ShoppingListsOverviewSkeleton } from "@/components/ui/loading";
 
 export default function ShoppingListsOverview() {
   const lists = useQuery(api.shoppingLists.queries.getAll);
@@ -13,7 +14,7 @@ export default function ShoppingListsOverview() {
   const [isCreating, setIsCreating] = useState(false);
   const [newListName, setNewListName] = useState("");
 
-  if (!lists) return <div>Loading...</div>;
+  if (!lists) return <ShoppingListsOverviewSkeleton />;
 
   const handleCreateList = async (e: React.FormEvent) => {
     e.preventDefault();
