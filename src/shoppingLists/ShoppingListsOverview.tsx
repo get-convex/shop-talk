@@ -7,8 +7,8 @@ import { useState } from "react";
 import { Input } from "../components/ui/input";
 
 export default function ShoppingListsOverview() {
-  const lists = useQuery(api.shoppingLists.queries.getAllLists);
-  const createList = useMutation(api.shoppingLists.mutations.createList);
+  const lists = useQuery(api.shoppingLists.queries.getAll);
+  const createList = useMutation(api.shoppingLists.mutations.create);
   const navigate = useNavigate();
   const [isCreating, setIsCreating] = useState(false);
   const [newListName, setNewListName] = useState("");

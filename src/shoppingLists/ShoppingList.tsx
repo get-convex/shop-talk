@@ -11,16 +11,13 @@ import { Id } from "convex/_generated/dataModel";
 export default function ShoppingList() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const lists = useQuery(api.shoppingLists.queries.getAllLists);
-  const list = lists?.find((l) => l._id === id);
+  const list = useQuery(api.shoppingLists.queries.getById, { id: id as Id<"shoppingLists"> });
 
-  const updateListName = useMutation(
-    api.shoppingLists.mutations.updateListName
-  );
-  const addItem = useMutation(api.shoppingLists.mutations.addItem);
-  const updateItem = useMutation(api.shoppingLists.mutations.updateItem);
-  const deleteItem = useMutation(api.shoppingLists.mutations.deleteItem);
-  const deleteList = useMutation(api.shoppingLists.mutations.deleteList);
+  const updateListName = useMutation(api.shoppingLists.mutations.updateName);
+  const addItem = useMutation(api.shoppingListItems.mutations.add);
+  const updateItem = useMutation(api.shoppingListItems.mutations.update);
+  const removeItem = useMutation(api.shoppingListItems.mutations.remove);
+  const removeList = useMutation(api.shoppingLists.mutations.remove);
 
   const [newItemName, setNewItemName] = useState("");
   const [editingId, setEditingId] = useState<Id<"shoppingListItems"> | null>(
@@ -62,7 +59,7 @@ export default function ShoppingList() {
 
   const handleDeleteList = async () => {
     if (list) {
-      await deleteList({ id: list._id });
+      await removeList({ id: list._id });
       navigate("/");
     }
   };
@@ -176,7 +173,7 @@ export default function ShoppingList() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => deleteItem({ id: item._id })}
+              onClick={() => removeItem({ id: item._id })}
               className="text-red-500 hover:text-red-700"
             >
               <Trash2 className="h-4 w-4" />

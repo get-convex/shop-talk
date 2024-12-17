@@ -47,24 +47,6 @@ export const functions = {
       required: ["item", "newName"],
     },
   },
-  update_item_by_index: {
-    name: "update_item_by_index",
-    description: "Update an item in the current shopping list by its position in the list",
-    parameters: {
-      type: "object",
-      properties: {
-        index: {
-          type: "number",
-          description: "The position of the item in the list (1-based index)",
-        },
-        newName: {
-          type: "string",
-          description: "The new name for the item",
-        },
-      },
-      required: ["index", "newName"],
-    },
-  },
   remove_item: {
     name: "remove_item",
     description: "Remove an item from the current shopping list",

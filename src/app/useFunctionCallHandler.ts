@@ -12,14 +12,13 @@ import { Id } from "convex/_generated/dataModel";
 
 export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
   const location = useLocation();
-  const createList = useMutation(api.shoppingLists.mutations.createList);
-  const addItem = useMutation(api.shoppingLists.mutations.addItem);
+  const createList = useMutation(api.shoppingLists.mutations.create);
+  const addItem = useMutation(api.shoppingListItems.mutations.add);
   const findItemByLabel = useMutation(
-    api.shoppingLists.mutations.findItemByLabel
+    api.shoppingListItems.mutations.findByLabel
   );
-  const updateItem = useMutation(api.shoppingLists.mutations.updateItem);
-  const deleteItem = useMutation(api.shoppingLists.mutations.deleteItem);
-  const getListItems = useMutation(api.shoppingLists.mutations.getListItems);
+  const updateItem = useMutation(api.shoppingListItems.mutations.update);
+  const removeItem = useMutation(api.shoppingListItems.mutations.remove);
 
   useEffect(() => {
     if (!voiceClient) return;
@@ -91,28 +90,6 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
             message: `Updated ${args.item} to ${args.newName}`,
           };
 
-        case "update_item_by_index":
-          if (!args.index) return { error: "index is required" };
-          if (!args.newName) return { error: "new name is required" };
-          if (args.index < 1) return { error: "index must be 1 or greater" };
-
-          const items = await getListItems({ listId: currentListId! });
-          const targetIndex = args.index - 1; // Convert to 0-based index
-
-          if (targetIndex >= items.length)
-            return { error: `List only has ${items.length} items` };
-
-          const targetItem = items[targetIndex];
-          await updateItem({
-            id: targetItem._id,
-            label: args.newName,
-          });
-
-          return {
-            success: true,
-            message: `Updated item #${args.index} to ${args.newName}`,
-          };
-
         case "remove_item":
           if (!args.item) return { error: "item name is required" };
 
@@ -124,7 +101,7 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
           if (!itemToRemove)
             return { error: `Item "${args.item}" not found in the list` };
 
-          await deleteItem({ id: itemToRemove._id });
+          await removeItem({ id: itemToRemove._id });
 
           return {
             success: true,
@@ -145,8 +122,7 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
     createList,
     addItem,
     updateItem,
-    deleteItem,
+    removeItem,
     findItemByLabel,
-    getListItems,
   ]);
 };
