@@ -8,13 +8,16 @@ interface TranscriptViewProps {
   transcripts: TranscriptItem[];
 }
 
-export const TranscriptView: React.FC<TranscriptViewProps> = ({ transcripts }) => {
+export const TranscriptView: React.FC<TranscriptViewProps> = ({
+  transcripts,
+}) => {
   const transcriptContainerRef = useRef<HTMLDivElement>(null);
 
+  // Lets auto scroll the transcript to the bottom when the transcripts change
   useEffect(() => {
-    if (transcriptContainerRef.current) {
-      transcriptContainerRef.current.scrollTop = transcriptContainerRef.current.scrollHeight;
-    }
+    if (transcriptContainerRef.current)
+      transcriptContainerRef.current.scrollTop =
+        transcriptContainerRef.current.scrollHeight;
   }, [transcripts]);
 
   return (
@@ -22,8 +25,8 @@ export const TranscriptView: React.FC<TranscriptViewProps> = ({ transcripts }) =
       <div className="text-xs font-medium text-amber-600 uppercase tracking-wider mb-1 flex-none">
         Transcript
       </div>
-      <div 
-        ref={transcriptContainerRef} 
+      <div
+        ref={transcriptContainerRef}
         className="flex-1 bg-white/50 backdrop-blur-sm rounded-lg p-4 shadow-inner overflow-y-auto 
           [&::-webkit-scrollbar]:w-2
           [&::-webkit-scrollbar-track]:bg-amber-50
@@ -38,7 +41,7 @@ export const TranscriptView: React.FC<TranscriptViewProps> = ({ transcripts }) =
               No transcript yet...
             </div>
           ) : (
-            transcripts.map(transcript => (
+            transcripts.map((transcript) => (
               <div
                 key={transcript.id}
                 className={cn(
@@ -61,4 +64,4 @@ export const TranscriptView: React.FC<TranscriptViewProps> = ({ transcripts }) =
       </div>
     </div>
   );
-}; 
+};
