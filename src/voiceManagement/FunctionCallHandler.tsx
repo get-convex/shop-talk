@@ -6,13 +6,9 @@ import { Id } from "convex/_generated/dataModel";
 import { assertNever, iife } from "../lib/utils";
 import { FunctionCallParams } from "@pipecat-ai/client-js";
 import { FunctionNames } from "../../convex/rtviConfig";
-import { LLMHelper } from "realtime-ai";
+import { useLLMHelper } from "./LLMHelperProvider";
 
-interface Props {
-  llmHelper: LLMHelper;
-}
-
-export const FunctionCallHandler: React.FC<Props> = ({ llmHelper }) => {
+export const FunctionCallHandler: React.FC = () => {
   const route = useRoute();
   const convex = useConvex();
   const createList = useMutation(api.shoppingLists.mutations.create);
@@ -20,6 +16,7 @@ export const FunctionCallHandler: React.FC<Props> = ({ llmHelper }) => {
   const addItems = useMutation(api.shoppingListItems.mutations.addMany);
   const updateItem = useMutation(api.shoppingListItems.mutations.update);
   const removeItem = useMutation(api.shoppingListItems.mutations.remove);
+  const llmHelper = useLLMHelper();
 
   React.useEffect(() => {
     if (!llmHelper) return;

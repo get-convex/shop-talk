@@ -1,15 +1,8 @@
-import { RouteProvider, useRoute } from "./routes";
-import { RTVIClientProvider, RTVIClientAudio } from "@pipecat-ai/client-react";
+import { useRoute } from "./routes";
+import { RTVIClientAudio } from "@pipecat-ai/client-react";
 import VoiceControls from "../voiceControls/VoiceControls";
 import ShoppingList from "../shoppingLists/ShoppingList";
 import ShoppingListsOverview from "../shoppingLists/ShoppingListsOverview";
-import { useFunctionCallHandler } from "./useFunctionCallHandler";
-import { useUpdateVoiceClientContext } from "./useUpdateVoiceClientContext";
-import { RTVIClient, LLMHelper } from "@pipecat-ai/client-js";
-import { DailyTransport } from "@pipecat-ai/daily-transport";
-import { useEffect } from "react";
-import { useRTVIClient } from "realtime-ai-react";
-import { useCreateLlmHelper } from "./useCreateLlmHelper";
 import { VoiceClientManagement } from "@/voiceManagement/VoiceClientManagement";
 
 function App() {
