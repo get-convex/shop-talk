@@ -1,14 +1,18 @@
-import { useEffect } from "react";
-import { FunctionCallParams } from "@pipecat-ai/client-js";
-import { routes, useRoute } from "./routes";
-import { FunctionNames } from "../../convex/rtviConfig";
+import * as React from "react";
+import { routes, useRoute } from "@/app/routes";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { assertNever, iife } from "../lib/utils";
+import { FunctionCallParams } from "@pipecat-ai/client-js";
+import { FunctionNames } from "../../convex/rtviConfig";
 import { LLMHelper } from "realtime-ai";
 
-export const useFunctionCallHandler = (llmHelper: LLMHelper | null) => {
+interface Props {
+  llmHelper: LLMHelper;
+}
+
+export const FunctionCallHandler: React.FC<Props> = ({ llmHelper }) => {
   const route = useRoute();
   const convex = useConvex();
   const createList = useMutation(api.shoppingLists.mutations.create);
@@ -17,7 +21,7 @@ export const useFunctionCallHandler = (llmHelper: LLMHelper | null) => {
   const updateItem = useMutation(api.shoppingListItems.mutations.update);
   const removeItem = useMutation(api.shoppingListItems.mutations.remove);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!llmHelper) return;
 
     llmHelper.handleFunctionCall(async (fn: FunctionCallParams) => {
@@ -136,13 +140,13 @@ export const useFunctionCallHandler = (llmHelper: LLMHelper | null) => {
             listId: route.params.id as Id<"shoppingLists">,
             items: args.items,
           });
-          return returnSuccess();
+
+          return returnSuccess(`Added ${args.items.length} items to the list`);
         }
 
         return assertNever(functionName, `Unknown function`);
       });
 
-      // Finally return the result to the llm
       console.log(`Function '${functionName}' returning`, {
         args,
         route,
@@ -150,5 +154,16 @@ export const useFunctionCallHandler = (llmHelper: LLMHelper | null) => {
       });
       return result;
     });
-  }, [route, llmHelper]);
+  }, [
+    llmHelper,
+    route,
+    convex,
+    createList,
+    addItem,
+    addItems,
+    updateItem,
+    removeItem,
+  ]);
+
+  return null;
 };

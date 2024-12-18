@@ -1,21 +1,22 @@
-import { RTVIEvent } from "@pipecat-ai/client-js";
-import { useEffect, useState } from "react";
-import { useRoute } from "@/app/routes";
+import * as React from "react";
+import { useState } from "react";
 import { useRTVIClientEvent } from "realtime-ai-react";
-import { TransportState, LLMHelper } from "realtime-ai";
+import { RTVIEvent, TransportState } from "@pipecat-ai/client-js";
+import { useRoute } from "@/app/routes";
+import { LLMHelper } from "realtime-ai";
 
-export const useUpdateVoiceClientContext = (llmHelper: LLMHelper | null) => {
+interface Props {
+  llmHelper: LLMHelper;
+}
+
+export const VoiceContextUpdater: React.FC<Props> = ({ llmHelper }) => {
   const route = useRoute();
   const [state, setState] = useState<TransportState>("disconnected");
   useRTVIClientEvent(RTVIEvent.TransportStateChanged, setState);
 
-  useEffect(() => {
-    console.log(`state`, { state, llmHelper, route });
-
+  React.useEffect(() => {
     if (!llmHelper) return;
     if (state !== "ready") return;
-
-    console.log(`SETTING CONTEXT.....`);
 
     llmHelper.setContext(
       {
@@ -33,4 +34,6 @@ ${JSON.stringify(route, null, 2)}
       true
     );
   }, [llmHelper, state, route]);
+
+  return null;
 };

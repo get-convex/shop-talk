@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Mic, MicOff } from "lucide-react";
-import { cn } from "../lib/utils";
-import { AudioIndicatorBubble } from "./AudioIndicatorBubble";
+import { cn } from "../lib/utils.ts";
+import { AudioIndicatorBubble } from "./AudioIndicatorBubble.tsx";
 import { TransportState } from "@pipecat-ai/client-js";
 import { useRTVIClient } from "@pipecat-ai/client-react";
 import { useState } from "react";

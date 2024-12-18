@@ -1,10 +1,10 @@
 import { TransportState, RTVIEvent } from "@pipecat-ai/client-js";
 import { useRTVIClientEvent, VoiceVisualizer } from "@pipecat-ai/client-react";
-import { TranscriptView } from "./TranscriptView";
+import { TranscriptView } from "./TranscriptView.tsx";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { MicButton } from "./MicButton";
-import { useTranscriptHandling } from "./useTranscriptHandling";
+import { MicButton } from "./MicButton.tsx";
+import { useTranscriptHandling } from "./useTranscriptHandling.ts";
 
 export default function VoiceControls() {
   const { transcripts } = useTranscriptHandling();
