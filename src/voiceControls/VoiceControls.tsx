@@ -1,36 +1,16 @@
-import { RTVIError, TransportState, RTVIEvent } from "@pipecat-ai/client-js";
-import {
-  useRTVIClient,
-  useRTVIClientEvent,
-  VoiceVisualizer,
-} from "@pipecat-ai/client-react";
+import { TransportState, RTVIEvent } from "@pipecat-ai/client-js";
+import { useRTVIClientEvent, VoiceVisualizer } from "@pipecat-ai/client-react";
 import { TranscriptView } from "./TranscriptView";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { MicButton } from "./MicButton";
 import { useTranscriptHandling } from "./useTranscriptHandling";
 
 export default function VoiceControls() {
-  const voiceClient = useRTVIClient();
-
-  const [state, setState] = useState<TransportState>("disconnected");
-  const [isMuted, setIsMuted] = useState(false);
   const { transcripts } = useTranscriptHandling();
-
+  const [state, setState] = useState<TransportState>("disconnected");
+  
   useRTVIClientEvent(RTVIEvent.TransportStateChanged, setState);
-
-  const toggleMute = async () => {
-    if (!voiceClient) return;
-    if (state === "disconnected") return;
-
-    try {
-      const newMutedState = !isMuted;
-      await voiceClient.enableMic(!newMutedState);
-      setIsMuted(newMutedState);
-    } catch (error) {
-      console.error("Failed to toggle mute:", error);
-    }
-  };
 
   const isReadyToTalk = state === "ready" || state === "connected";
 
@@ -73,12 +53,7 @@ export default function VoiceControls() {
             </div>
 
             <div className="flex-none px-6 pb-12">
-              <MicButton
-                isMuted={isMuted}
-                state={state}
-                isReadyToTalk={isReadyToTalk}
-                onToggleMute={toggleMute}
-              />
+              <MicButton state={state} isReadyToTalk={isReadyToTalk} />
             </div>
           </div>
         </div>

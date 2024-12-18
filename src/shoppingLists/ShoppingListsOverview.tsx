@@ -8,7 +8,7 @@ import { Input } from "../components/ui/input";
 import { ShoppingListsOverviewSkeleton } from "@/components/ui/loading";
 
 export default function ShoppingListsOverview() {
-  const lists = useQuery(api.shoppingLists.queries.getAll);
+  const lists = useQuery(api.shoppingLists.queries.getAllWithSomeItems);
   const createList = useMutation(api.shoppingLists.mutations.create);
   const [isCreating, setIsCreating] = useState(false);
   const [newListName, setNewListName] = useState("");

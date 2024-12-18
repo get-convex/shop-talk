@@ -6,17 +6,15 @@ import {
 } from "@pipecat-ai/client-js";
 import { routes, useRoute } from "./routes";
 import { FunctionNames } from "../../convex/rtviConfig";
-import { useMutation } from "convex/react";
+import { useConvex, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 
 export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
   const route = useRoute();
+  const convex = useConvex();
   const createList = useMutation(api.shoppingLists.mutations.create);
   const addItem = useMutation(api.shoppingListItems.mutations.add);
-  const findItemByLabel = useMutation(
-    api.shoppingListItems.mutations.findByLabel
-  );
   const updateItem = useMutation(api.shoppingListItems.mutations.update);
   const removeItem = useMutation(api.shoppingListItems.mutations.remove);
 
@@ -71,10 +69,13 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
           if (!args.item) return { error: "item name is required" };
           if (!args.newName) return { error: "new name is required" };
 
-          const existingItem = await findItemByLabel({
-            listId: currentListId!,
-            label: args.item,
-          });
+          const existingItem = await convex.query(
+            api.shoppingListItems.queries.findByLabel,
+            {
+              listId: currentListId!,
+              label: args.item,
+            }
+          );
 
           if (!existingItem)
             return { error: `Item "${args.item}" not found in the list` };
@@ -92,10 +93,13 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
         case "remove_item":
           if (!args.item) return { error: "item name is required" };
 
-          const itemToRemove = await findItemByLabel({
-            listId: currentListId!,
-            label: args.item,
-          });
+          const itemToRemove = await convex.query(
+            api.shoppingListItems.queries.findByLabel,
+            {
+              listId: currentListId!,
+              label: args.item,
+            }
+          );
 
           if (!itemToRemove)
             return { error: `Item "${args.item}" not found in the list` };
@@ -108,7 +112,14 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
           };
 
         case "open_list":
-          routes.list({ id: args.name }).push();
+          const list = await convex.query(
+            api.shoppingLists.queries.findByName,
+            {
+              name: args.name,
+            }
+          );
+          if (!list) return { error: `List "${args.name}" not found` };
+          routes.list({ id: list._id }).push();
           return { success: true };
 
         case "go_back_to_lists":
@@ -124,5 +135,5 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
     return () => {
       voiceClient.unregisterHelper("llm");
     };
-  }, [route, createList, addItem, updateItem, removeItem, findItemByLabel]);
+  }, [route]);
 };

@@ -3,24 +3,41 @@ import { Mic, MicOff } from "lucide-react";
 import { cn } from "../lib/utils";
 import { AudioIndicatorBubble } from "./AudioIndicatorBubble";
 import { TransportState } from "@pipecat-ai/client-js";
+import { useRTVIClient } from "@pipecat-ai/client-react";
+import { useState } from "react";
 
 interface MicButtonProps {
-  isMuted: boolean;
   state: TransportState;
   isReadyToTalk: boolean;
-  onToggleMute: () => void;
 }
 
 export const MicButton: React.FC<MicButtonProps> = ({
-  isMuted,
   state,
   isReadyToTalk,
-  onToggleMute,
 }) => {
+  const voiceClient = useRTVIClient();
+
+  const [isMuted, setIsMuted] = useState(() => {
+    const stored = localStorage.getItem("voiceControls.isMuted");
+    return stored ? JSON.parse(stored) : false;
+  });
+
+  React.useEffect(() => {
+    if (!voiceClient) return;
+    if (state === "disconnected") return;
+    voiceClient.enableMic(!isMuted);
+  }, [voiceClient, isMuted, state]);
+
   return (
     <div className="relative flex justify-center">
       <button
-        onClick={onToggleMute}
+        onClick={() => {
+          setIsMuted(!isMuted);
+          localStorage.setItem(
+            "voiceControls.isMuted",
+            JSON.stringify(!isMuted)
+          );
+        }}
         disabled={!isReadyToTalk}
         className={cn(
           "relative w-20 h-20 rounded-full transition-all duration-300 shadow-lg flex items-center justify-center",

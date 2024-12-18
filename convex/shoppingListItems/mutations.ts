@@ -37,21 +37,3 @@ export const remove = mutation({
   },
 })
 
-export const findByLabel = mutation({
-  args: { 
-    listId: v.id("shoppingLists"),
-    label: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const items = await ctx.db
-      .query("shoppingListItems")
-      .filter(q => 
-        q.and(
-          q.eq(q.field("listId"), args.listId),
-          q.eq(q.field("label"), args.label)
-        )
-      )
-      .collect()
-    return items[0] || null
-  },
-}) 

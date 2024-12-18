@@ -14,7 +14,9 @@ interface ShoppingListProps {
 }
 
 export default function ShoppingList({ id }: ShoppingListProps) {
-  const list = useQuery(api.shoppingLists.queries.getById, { id: id as Id<"shoppingLists"> });
+  const list = useQuery(api.shoppingLists.queries.findByIdAndAllItems, {
+    id: id as Id<"shoppingLists">,
+  });
 
   const updateListName = useMutation(api.shoppingLists.mutations.updateName);
   const addItem = useMutation(api.shoppingListItems.mutations.add);
@@ -23,7 +25,9 @@ export default function ShoppingList({ id }: ShoppingListProps) {
   const removeList = useMutation(api.shoppingLists.mutations.remove);
 
   const [newItemName, setNewItemName] = useState("");
-  const [editingId, setEditingId] = useState<Id<"shoppingListItems"> | null>(null);
+  const [editingId, setEditingId] = useState<Id<"shoppingListItems"> | null>(
+    null
+  );
   const [editingText, setEditingText] = useState("");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
