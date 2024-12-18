@@ -15,6 +15,23 @@ export const functions = {
       required: ["name"],
     },
   },
+  add_items: {
+    name: "add_items",
+    description: "Add multiple items to the current shopping list at once",
+    parameters: {
+      type: "object",
+      properties: {
+        items: {
+          type: "array",
+          items: {
+            type: "string"
+          },
+          description: "Array of item names to add to the list",
+        },
+      },
+      required: ["items"],
+    },
+  },
   add_item: {
     name: "add_item",
     description: "Add a new item to the current shopping list",

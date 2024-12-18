@@ -16,6 +16,25 @@ export const add = mutation({
   },
 })
 
+export const addMany = mutation({
+  args: {
+    listId: v.id("shoppingLists"),
+    items: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const itemIds = await Promise.all(
+      args.items.map(label => 
+        ctx.db.insert("shoppingListItems", {
+          listId: args.listId,
+          label,
+          completed: false,
+        })
+      )
+    )
+    return itemIds
+  },
+})
+
 export const update = mutation({
   args: {
     id: v.id("shoppingListItems"),
