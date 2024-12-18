@@ -9,7 +9,6 @@ import { useTranscriptHandling } from "./useTranscriptHandling";
 export default function VoiceControls() {
   const { transcripts } = useTranscriptHandling();
   const [state, setState] = useState<TransportState>("disconnected");
-
   useRTVIClientEvent(RTVIEvent.TransportStateChanged, setState);
 
   const isReadyToTalk = state === "ready" || state === "connected";

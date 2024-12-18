@@ -1,17 +1,14 @@
 import { useEffect } from "react";
-import {
-  FunctionCallParams,
-  LLMHelper,
-  RTVIClient,
-} from "@pipecat-ai/client-js";
+import { FunctionCallParams } from "@pipecat-ai/client-js";
 import { routes, useRoute } from "./routes";
 import { FunctionNames } from "../../convex/rtviConfig";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { assertNever, iife } from "../lib/utils";
+import { LLMHelper } from "realtime-ai";
 
-export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
+export const useFunctionCallHandler = (llmHelper: LLMHelper | null) => {
   const route = useRoute();
   const convex = useConvex();
   const createList = useMutation(api.shoppingLists.mutations.create);
@@ -21,14 +18,7 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
   const removeItem = useMutation(api.shoppingListItems.mutations.remove);
 
   useEffect(() => {
-    if (!voiceClient) return;
-
-    const llmHelper = voiceClient.registerHelper(
-      "llm",
-      new LLMHelper({
-        callbacks: {},
-      })
-    ) as LLMHelper;
+    if (!llmHelper) return;
 
     llmHelper.handleFunctionCall(async (fn: FunctionCallParams) => {
       const args = fn.arguments as any;
@@ -66,9 +56,10 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
 
         if (functionName === "add_item") {
           if (!args.item) return returnError("item name is required");
+          if (!currentListId) return returnError("No list open");
 
           const newItemId = await addItem({
-            listId: currentListId!,
+            listId: currentListId,
             label: args.item,
           });
 
@@ -80,11 +71,12 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
         if (functionName === "update_item") {
           if (!args.item) return returnError("item name is required");
           if (!args.newName) return returnError("new name is required");
+          if (!currentListId) return returnError("No list open");
 
           const existingItem = await convex.query(
             api.shoppingListItems.queries.searchByLabel,
             {
-              listId: currentListId!,
+              listId: currentListId,
               label: args.item,
             }
           );
@@ -102,11 +94,12 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
 
         if (functionName === "remove_item") {
           if (!args.item) return returnError("item name is required");
+          if (!currentListId) return returnError("No list open");
 
           const itemToRemove = await convex.query(
             api.shoppingListItems.queries.searchByLabel,
             {
-              listId: currentListId!,
+              listId: currentListId,
               label: args.item,
             }
           );
@@ -157,10 +150,5 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
       });
       return result;
     });
-
-    // Cleanup
-    return () => {
-      voiceClient.unregisterHelper("llm");
-    };
-  }, [route]);
+  }, [route, llmHelper]);
 };
