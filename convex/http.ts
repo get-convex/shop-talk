@@ -40,8 +40,12 @@ http.route({
   method: "POST",
   handler: httpAction(async (ctx, request) => {
     if (!process.env.DAILY_BOTS_KEY) {
-      return Response.json("Daily bots key not found", {
+      return new Response(JSON.stringify("Daily bots key not found"), {
         status: 400,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
       });
     }
 
