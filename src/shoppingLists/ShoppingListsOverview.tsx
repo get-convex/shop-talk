@@ -135,7 +135,8 @@ export default function ShoppingListsOverview() {
         <div className="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3 shadow-sm">
           <AlertCircle size={16} className="text-amber-500 flex-shrink-0" />
           <p className="text-amber-700">
-            For demo purposes, these shopping lists are shared with everyone
+            For demo purposes, these shopping lists are shared with everyone and
+            reset daily
           </p>
         </div>
       </div>

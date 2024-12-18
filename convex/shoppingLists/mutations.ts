@@ -32,4 +32,11 @@ export const remove = mutation({
     // Delete the list itself
     await ctx.db.delete(args.id)
   },
+})
+
+export const getAllLists = mutation({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("shoppingLists").collect()
+  },
 }) 

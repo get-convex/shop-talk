@@ -8,7 +8,7 @@ export const getAllWithSomeItems = query(async (ctx) => {
       const items = await ctx.db
         .query("shoppingListItems")
         .withIndex("by_listId", (q) => q.eq("listId", list._id))
-        .take(10);
+        .take(50);
       return { ...list, items };
     })
   );

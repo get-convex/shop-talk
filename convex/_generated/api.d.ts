@@ -13,7 +13,9 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as crons from "../crons.js";
 import type * as http from "../http.js";
+import type * as janitor from "../janitor.js";
 import type * as rtviConfig from "../rtviConfig.js";
 import type * as shoppingListItems_mutations from "../shoppingListItems/mutations.js";
 import type * as shoppingListItems_queries from "../shoppingListItems/queries.js";
@@ -29,7 +31,9 @@ import type * as shoppingLists_queries from "../shoppingLists/queries.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  crons: typeof crons;
   http: typeof http;
+  janitor: typeof janitor;
   rtviConfig: typeof rtviConfig;
   "shoppingListItems/mutations": typeof shoppingListItems_mutations;
   "shoppingListItems/queries": typeof shoppingListItems_queries;

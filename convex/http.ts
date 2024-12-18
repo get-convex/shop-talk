@@ -1,7 +1,6 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
-import { RTVIClientConfigOption } from "@pipecat-ai/client-js";
-import { functions, defaultRtviConfig } from "./rtviConfig";
+import { defaultRtviConfig } from "./rtviConfig";
 
 const http = httpRouter();
 
