@@ -24,7 +24,7 @@ export const functions = {
         items: {
           type: "array",
           items: {
-            type: "string"
+            type: "string",
           },
           description: "Array of item names to add to the list",
         },
@@ -130,7 +130,7 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
             content: [
               {
                 type: "text",
-                text: "You are a helpful shopping list assistant.",
+                text: "You are a helpful shopping list assistant called Jane.",
               },
             ],
           },

@@ -1,6 +1,6 @@
+import { LLMHelper } from "@pipecat-ai/client-js";
+import { useRTVIClient } from "@pipecat-ai/client-react";
 import * as React from "react";
-import { LLMHelper } from "realtime-ai";
-import { useRTVIClient } from "realtime-ai-react";
 
 interface Props {
   children?: React.ReactNode;
@@ -13,6 +13,8 @@ export const LLMHelperProvider: React.FC<Props> = ({ children }) => {
   React.useEffect(() => {
     if (!voiceClient) return;
 
+    
+
     setLlmHelper(
       voiceClient.registerHelper(
         "llm",
@@ -23,18 +25,27 @@ export const LLMHelperProvider: React.FC<Props> = ({ children }) => {
     );
   }, [voiceClient]);
 
+  const value = React.useMemo(() => ({ llmHelper }), [llmHelper]);
+
   return (
-    <LLMHelperContext.Provider value={llmHelper}>
+    <LLMHelperContext.Provider value={value}>
       {children}
     </LLMHelperContext.Provider>
   );
 };
 
-export const LLMHelperContext = React.createContext<LLMHelper | null>(null);
+interface LLMHelperContextValue {
+  llmHelper: LLMHelper | null;
+}
 
-export const useLLMHelper = (): LLMHelper => {
+export const LLMHelperContext = React.createContext<LLMHelperContextValue>({
+  llmHelper: null,
+});
+
+export const useLLMHelper = (): LLMHelper | null => {
   const context = React.useContext(LLMHelperContext);
   if (!context)
     throw new Error("useLlmHelper must be used within a LlmHelperProvider");
-  return context;
+
+  return context.llmHelper;
 };

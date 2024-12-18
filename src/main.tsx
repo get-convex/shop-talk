@@ -11,26 +11,24 @@ import { DailyTransport } from "@pipecat-ai/daily-transport";
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ConvexProvider client={convex}>
-      <RouteProvider>
-        <RTVIClientProvider
-          client={
-            new RTVIClient({
-              transport: new DailyTransport(),
-              params: {
-                baseUrl: import.meta.env.VITE_CONVEX_SITE_URL,
-                endpoints: {
-                  connect: "/connect",
-                  action: "/actions",
-                },
+  <ConvexProvider client={convex}>
+    <RouteProvider>
+      <RTVIClientProvider
+        client={
+          new RTVIClient({
+            transport: new DailyTransport(),
+            params: {
+              baseUrl: import.meta.env.VITE_CONVEX_SITE_URL,
+              endpoints: {
+                connect: "/connect",
+                action: "/actions",
               },
-            })
-          }
-        >
-          <App />
-        </RTVIClientProvider>
-      </RouteProvider>
-    </ConvexProvider>
-  </StrictMode>
+            },
+          })
+        }
+      >
+        <App />
+      </RTVIClientProvider>
+    </RouteProvider>
+  </ConvexProvider>
 );

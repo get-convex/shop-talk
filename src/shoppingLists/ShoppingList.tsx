@@ -13,7 +13,7 @@ interface ShoppingListProps {
   id: string;
 }
 
-export default function ShoppingList({ id }: ShoppingListProps) {
+export default function ShoppingListRoute({ id }: ShoppingListProps) {
   const list = useQuery(api.shoppingLists.queries.findByIdAndAllItems, {
     id: id as Id<"shoppingLists">,
   });

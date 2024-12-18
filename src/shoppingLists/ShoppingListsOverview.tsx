@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { ShoppingListsOverviewSkeleton } from "@/components/ui/loading";
 
-export default function ShoppingListsOverview() {
+export default function ShoppingListsOverviewRoute() {
   const lists = useQuery(api.shoppingLists.queries.getAllWithSomeItems);
   const createList = useMutation(api.shoppingLists.mutations.create);
   const [isCreating, setIsCreating] = useState(false);
