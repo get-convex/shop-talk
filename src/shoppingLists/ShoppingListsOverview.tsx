@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Button } from "../components/ui/button";
-import { Plus, ShoppingBag } from "lucide-react";
+import { Plus, ShoppingBag, AlertCircle } from "lucide-react";
 import { routes } from "../app/routes";
 import { useState } from "react";
 import { Input } from "../components/ui/input";
@@ -16,7 +16,7 @@ export default function ShoppingListsOverview() {
   if (!lists) return <ShoppingListsOverviewSkeleton />;
 
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto p-8 relative">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-amber-800">My Shopping Lists</h1>
         {isCreating ? (
@@ -129,6 +129,15 @@ export default function ShoppingListsOverview() {
             </Button>
           </div>
         )}
+      </div>
+
+      <div className="fixed bottom-8 right-8">
+        <div className="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3 shadow-sm">
+          <AlertCircle size={16} className="text-amber-500 flex-shrink-0" />
+          <p className="text-amber-700">
+            For demo purposes, these shopping lists are shared with everyone
+          </p>
+        </div>
       </div>
     </div>
   );

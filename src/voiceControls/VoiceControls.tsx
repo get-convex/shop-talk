@@ -9,7 +9,7 @@ import { useTranscriptHandling } from "./useTranscriptHandling";
 export default function VoiceControls() {
   const { transcripts } = useTranscriptHandling();
   const [state, setState] = useState<TransportState>("disconnected");
-  
+
   useRTVIClientEvent(RTVIEvent.TransportStateChanged, setState);
 
   const isReadyToTalk = state === "ready" || state === "connected";
@@ -28,7 +28,7 @@ export default function VoiceControls() {
             <div className="flex-none px-6 pt-6">
               <div className="h-fit bg-white/80 rounded-xl p-4 shadow-sm">
                 <div className="text-xs font-medium text-amber-600 mb-2 text-center">
-                  4o-mini
+                  gpt-4o-mini
                 </div>
                 <div className="h-24 flex items-center justify-center">
                   {isReadyToTalk ? (
