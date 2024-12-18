@@ -37,12 +37,12 @@ export const findByIdAndAllItems = query({
   },
 });
 
-export const findByName = query({
+export const searchByName = query({
   args: { name: v.string() },
   handler: async (ctx, args) => {
     const list = await ctx.db
       .query("shoppingLists")
-      .withIndex("by_name", (q) => q.eq("name", args.name))
+      .withSearchIndex("by_name", (q) => q.search("name", args.name))
       .first();
 
     if (!list) return null;

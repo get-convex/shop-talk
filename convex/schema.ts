@@ -4,12 +4,16 @@ import { v } from "convex/values";
 export default defineSchema({
   shoppingLists: defineTable({
     name: v.string(),
-  }).index("by_name", ["name"]),
+  }).searchIndex("by_name", {
+    searchField: "name",
+  }),
   shoppingListItems: defineTable({
     listId: v.id("shoppingLists"),
     label: v.string(),
     completed: v.boolean(),
   })
-    .index("by_label", ["label"])
+    .searchIndex("by_label", {
+      searchField: "label",
+    })
     .index("by_listId", ["listId"]),
 });

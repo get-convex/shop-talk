@@ -40,10 +40,6 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
       const currentListId =
         route.name === "list" ? (route.params.id as Id<"shoppingLists">) : null;
 
-      if (!currentListId && functionName !== "create_shopping_list") {
-        return { error: "No shopping list selected" };
-      }
-
       if (functionName === "create_shopping_list") {
         if (!args.name) return { error: "name is required" };
         const listId = await createList({ name: args.name });
@@ -72,14 +68,15 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
         if (!args.newName) return { error: "new name is required" };
 
         const existingItem = await convex.query(
-          api.shoppingListItems.queries.findByLabel,
+          api.shoppingListItems.queries.searchByLabel,
           {
             listId: currentListId!,
             label: args.item,
           }
         );
 
-        if (!existingItem) return { error: `Item "${args.item}" not found in the list` };
+        if (!existingItem)
+          return { error: `Item "${args.item}" not found in the list` };
 
         await updateItem({
           id: existingItem._id,
@@ -96,14 +93,15 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
         if (!args.item) return { error: "item name is required" };
 
         const itemToRemove = await convex.query(
-          api.shoppingListItems.queries.findByLabel,
+          api.shoppingListItems.queries.searchByLabel,
           {
             listId: currentListId!,
             label: args.item,
           }
         );
 
-        if (!itemToRemove) return { error: `Item "${args.item}" not found in the list` };
+        if (!itemToRemove)
+          return { error: `Item "${args.item}" not found in the list` };
 
         await removeItem({ id: itemToRemove._id });
 
@@ -115,11 +113,12 @@ export const useFunctionCallHandler = (voiceClient: RTVIClient | null) => {
 
       if (functionName === "open_list") {
         const list = await convex.query(
-          api.shoppingLists.queries.findByName,
+          api.shoppingLists.queries.searchByName,
           {
             name: args.name,
           }
         );
+        console.log("LIST", list);
         if (!list) return { error: `List "${args.name}" not found` };
         routes.list({ id: list._id }).push();
         return { success: true };

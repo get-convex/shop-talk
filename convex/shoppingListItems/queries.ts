@@ -13,7 +13,7 @@ export const getAllOnList = query({
   },
 });
 
-export const findByLabel = query({
+export const searchByLabel = query({
   args: {
     listId: v.id("shoppingLists"),
     label: v.string(),
@@ -21,7 +21,7 @@ export const findByLabel = query({
   handler: async (ctx, args) => {
     return await ctx.db
       .query("shoppingListItems")
-      .withIndex("by_label", (q) => q.eq("label", args.label))
+      .withSearchIndex("by_label", (q) => q.search("label", args.label))
       .filter((q) => q.eq(q.field("listId"), args.listId))
       .first();
   },
