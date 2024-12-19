@@ -15,6 +15,25 @@ export const functionDefinitions = {
       required: ["name"],
     },
   },
+  get_current_list: {
+    name: "get_current_list",
+    description: "Get information about the currently active shopping list including its items",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+  },
+  get_current_route: {
+    name: "get_current_route",
+    description:
+      "Get information about the current route the user is looking at",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+  },
   add_items: {
     name: "add_items",
     description: "Add multiple items to the current shopping list at once",
@@ -105,6 +124,9 @@ export const functionDefinitions = {
 
 export type FunctionNames = keyof typeof functionDefinitions;
 
+export const initialSystemMessage =
+  "You are a helpful shopping list assistant called Jane for the app Shop Talk. Be brief and concise and only respond with the answer to the user's question.";
+
 export const defaultRtviConfig: RTVIClientConfigOption[] = [
   {
     service: "tts",
@@ -130,7 +152,7 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
             content: [
               {
                 type: "text",
-                text: "You are a helpful shopping list assistant called Jane for the app Shop Talk. Be brief and concise and only respond with the answer to the user's question.",
+                text: initialSystemMessage,
               },
             ],
           },

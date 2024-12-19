@@ -130,6 +130,35 @@ export const FunctionCallHandler: React.FC = () => {
           return returnSuccess();
         }
 
+        if (functionName === "get_current_route") {
+          return returnSuccess(`The current route is '${route.name}'`, {
+            route: JSON.stringify(route, null, 2),
+          });
+        }
+
+        if (functionName === "get_current_list") {
+          if (route.name !== "list")
+            return returnError("No shopping list is currently open");
+
+          const listId = route.params.id as Id<"shoppingLists">;
+          const list = await convex.query(
+            api.shoppingLists.queries.findByIdAndAllItems,
+            {
+              id: listId,
+            }
+          );
+
+          if (!list)
+            return returnError("Could not find the current shopping list");
+
+          return returnSuccess(
+            `Currently viewing shopping list "${list.name}"`,
+            {
+              list,
+            }
+          );
+        }
+
         if (functionName === "add_items") {
           if (route.name != "list") return returnError("No list open");
 
