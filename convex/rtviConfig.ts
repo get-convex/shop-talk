@@ -1,6 +1,6 @@
 import { RTVIClientConfigOption } from "@pipecat-ai/client-js";
 
-export const functions = {
+export const functionDefinitions = {
   create_shopping_list: {
     name: "create_shopping_list",
     description: "Create a new shopping list with a name and optional items",
@@ -103,7 +103,7 @@ export const functions = {
   },
 } as const;
 
-export type FunctionNames = keyof typeof functions;
+export type FunctionNames = keyof typeof functionDefinitions;
 
 export const defaultRtviConfig: RTVIClientConfigOption[] = [
   {
@@ -142,7 +142,7 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
       },
       {
         name: "tools",
-        value: Object.values(functions).map((fn) => ({
+        value: Object.values(functionDefinitions).map((fn) => ({
           type: "function" as const,
           function: fn,
         })),
