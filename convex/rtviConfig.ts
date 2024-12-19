@@ -126,7 +126,7 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
         name: "initial_messages",
         value: [
           {
-            role: "user",
+            role: "system",
             content: [
               {
                 type: "text",
@@ -151,4 +151,4 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
   },
 ];
 
-export const maxSessionDurationSeconds = 60;
+export const maxSessionDurationSeconds = 180;
