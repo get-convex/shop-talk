@@ -15,6 +15,10 @@ export const AutoConnectVoiceClient: React.FC<Props> = ({}) => {
     console.log("Connecting to voice client");
     voiceClient.connect().catch(console.error);
 
+    voiceClient.addListener("botDisconnected", (e) => {
+      console.log("!!!!! Bot disconnected !!!!!!", e);
+    });
+
     return () => {
       console.log("Disconnecting from voice client");
       voiceClient.disconnect().catch(console.error);

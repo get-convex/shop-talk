@@ -150,3 +150,5 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
     ],
   },
 ];
+
+export const maxSessionDurationSeconds = 60;

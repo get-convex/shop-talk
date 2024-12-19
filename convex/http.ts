@@ -1,6 +1,6 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
-import { defaultRtviConfig } from "./rtviConfig";
+import { defaultRtviConfig, maxSessionDurationSeconds } from "./rtviConfig";
 
 const http = httpRouter();
 
@@ -39,19 +39,15 @@ http.route({
   path: "/connect",
   method: "POST",
   handler: httpAction(async (ctx, request) => {
-    if (!process.env.DAILY_BOTS_KEY) {
-      return new Response(JSON.stringify("Daily bots key not found"), {
-        status: 400,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      });
-    }
+    if (!process.env.DAILY_BOTS_KEY)
+      throw new Error("Daily bots key not found");
+
+    if (!process.env.OPENAI_API_KEY)
+      throw new Error("OpenAI API key not found");
 
     const payload = {
       bot_profile: "voice_2024_10",
-      max_duration: 600,
+      max_duration: maxSessionDurationSeconds,
       services: {
         stt: "deepgram",
         tts: "cartesia",
@@ -63,6 +59,8 @@ http.route({
       config: defaultRtviConfig,
     };
 
+    console.log(`Requesting connection to Daily Bots..`);
+
     const req = await fetch("https://api.daily.co/v1/bots/start", {
       method: "POST",
       headers: {
@@ -73,6 +71,8 @@ http.route({
     });
 
     const res = await req.json();
+
+    console.log(`Daily Bots response: ${JSON.stringify(res)}`);
 
     if (req.status !== 200)
       return Response.json(res, { ...corsHeaders, status: req.status });
