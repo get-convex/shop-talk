@@ -1,5 +1,5 @@
 import { api } from "./_generated/api";
-import { internalMutation, mutation } from "./_generated/server";
+import { internalMutation } from "./_generated/server";
 
 export const dailyReset = internalMutation({
   args: {},

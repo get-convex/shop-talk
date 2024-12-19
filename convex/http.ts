@@ -45,7 +45,7 @@ http.route({
     if (!process.env.OPENAI_API_KEY)
       throw new Error("OpenAI API key not found");
 
-    const payload = {
+    const dailybotsNewConnectionPayload = {
       bot_profile: "voice_2024_10",
       max_duration: maxSessionDurationSeconds,
       services: {
@@ -67,7 +67,7 @@ http.route({
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.DAILY_BOTS_KEY}`,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(dailybotsNewConnectionPayload),
     });
 
     const res = await req.json();
