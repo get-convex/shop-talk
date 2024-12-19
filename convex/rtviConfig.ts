@@ -130,7 +130,7 @@ export const defaultRtviConfig: RTVIClientConfigOption[] = [
             content: [
               {
                 type: "text",
-                text: "You are a helpful shopping list assistant called Jane for the app Shop Talk.",
+                text: "You are a helpful shopping list assistant called Jane for the app Shop Talk. Be brief and concise and only respond with the answer to the user's question.",
               },
             ],
           },

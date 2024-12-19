@@ -1,10 +1,11 @@
 import { TransportState, RTVIEvent } from "@pipecat-ai/client-js";
-import { useRTVIClientEvent, VoiceVisualizer } from "@pipecat-ai/client-react";
+import { useRTVIClientEvent } from "@pipecat-ai/client-react";
 import { TranscriptView } from "./TranscriptView.tsx";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
 import { MicButton } from "./MicButton.tsx";
 import { useTranscriptHandling } from "./useTranscriptHandling.ts";
+import { BotDisconnectedOverlay } from "./BotDisconnectedOverlay.tsx";
+import { VoiceVisualizerCard } from "./VoiceVisualizerCard.tsx";
 
 export default function VoiceControls() {
   const { transcripts } = useTranscriptHandling();
@@ -14,7 +15,8 @@ export default function VoiceControls() {
   const isReadyToTalk = state === "ready" || state === "connected";
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-b from-amber-50 to-white">
+    <div className="flex flex-col h-full bg-gradient-to-b from-amber-50 to-white relative">
+      <BotDisconnectedOverlay />
       <div className="p-6 border-b border-amber-200">
         <h2 className="text-xl font-semibold text-amber-800">🛒 Shop Talk</h2>
         <p className="text-sm text-amber-600 mt-1">
@@ -25,26 +27,7 @@ export default function VoiceControls() {
         <div className="flex flex-col h-full">
           <div className="flex-1 flex flex-col min-h-0">
             <div className="flex-none px-6 pt-6">
-              <div className="h-fit bg-white/80 rounded-xl p-4 shadow-sm">
-                <div className="text-xs font-medium text-amber-600 mb-2 text-center">
-                  gpt-4o-mini
-                </div>
-                <div className="h-24 flex items-center justify-center">
-                  {isReadyToTalk ? (
-                    <VoiceVisualizer
-                      participantType="bot"
-                      barColor="#F59E0B"
-                      barWidth={8}
-                      barMaxHeight={60}
-                    />
-                  ) : (
-                    <Loader2
-                      size={32}
-                      className="animate-spin text-[#F59E0B]"
-                    />
-                  )}
-                </div>
-              </div>
+              <VoiceVisualizerCard isReadyToTalk={isReadyToTalk} />
             </div>
 
             <div className="flex-1 flex flex-col min-h-0 px-6 py-6">
