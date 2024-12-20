@@ -131,12 +131,23 @@ export default function ShoppingListsOverviewRoute() {
         )}
       </div>
 
-      <div className="fixed bottom-8 right-8">
-        <div className="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3 shadow-sm">
-          <AlertCircle size={16} className="text-amber-500 flex-shrink-0" />
+      <div className="fixed bottom-8 right-8 flex flex-col gap-2 opacity-60 hover:opacity-100">
+        <div className="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3 shadow-sm max-w-96">
+          <AlertCircle size={24} className="text-amber-500 flex-shrink-0" />
           <p className="text-amber-700">
-            For demo purposes, these shopping lists are shared with everyone and
-            reset daily
+            Shopping lists are shared with everyone and reset daily. State sync
+            powered by
+            <a
+              href="https://convex.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/convex-logo.svg"
+                alt="Convex Logo"
+                className="h-8 w-22 inline-block"
+              />
+            </a>
           </p>
         </div>
       </div>

@@ -9,6 +9,8 @@ A real-time collaborative shopping list application that demonstrates the integr
 - Real-time data synchronization using Convex
 - Modern UI built with React and Tailwind CSS
 
+## Development
+
 1. Install dependencies:
 ```bash
 bun install
@@ -29,9 +31,11 @@ bun convex env set DAILY_BOTS_KEY {YOUR_KEY}
 bun convex env set OPENAI_API_KEY {YOUR_KEY}
 ```
 
-4. Open your browser and navigate to the local development server (typically http://localhost:5173)
+4. Setup your `.env.local`. Checkout `example.env.local` for what local vars Vite expects
 
-## Development
+5. Open your browser and navigate to the local development server (typically http://localhost:5173)
+
+## Layout
 
 The project is structured with:
 - `/src` - React frontend code
