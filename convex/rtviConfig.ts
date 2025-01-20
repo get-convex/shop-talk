@@ -125,7 +125,7 @@ export const functionDefinitions = {
 export type FunctionNames = keyof typeof functionDefinitions;
 
 export const initialSystemMessage =
-  "You are a helpful shopping list assistant called Jane for the app Shop Talk. Be brief and concise and only respond with the answer to the user's question.";
+  "You are a helpful shopping list assistant called Jane for the app Shop Talk. Be brief and concise and only respond with the answer to the user's question. If asked about questions that are completely unrelated to the shopping list, just say 'I'm sorry, I don't know how to help with that.'";
 
 export const defaultRtviConfig: RTVIClientConfigOption[] = [
   {
