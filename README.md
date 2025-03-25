@@ -1,6 +1,6 @@
 # Shop Talk
 
-A real-time collaborative shopping list application that demonstrates the integration of voice capabilities using [daily-bots](dailybots.ai) and [Convex](https://convex.dev/) backend.
+A real-time collaborative shopping list application that demonstrates the integration of voice capabilities using [daily-bots](https://www.dailybots.ai/) and [Convex](https://convex.dev/) backend.
 
 ## Features
 
